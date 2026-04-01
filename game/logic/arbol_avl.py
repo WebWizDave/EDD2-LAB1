@@ -1,5 +1,6 @@
-from game.logic.nodo_avl import NodoAVL
 
+from nodo_avl import NodoAVL
+from caso_criminal import CasoCriminal
 
 class ArbolAVL:
     def __init__(self):
