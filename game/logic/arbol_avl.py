@@ -90,6 +90,11 @@ class ArbolAVL:
 
         return nodo_actual
     
+    #metodo para agregar los caso mas facil
+    def agregar_caso(self, nuevo_caso):
+        self.raiz = self.insertar(self.raiz, nuevo_caso)
+        
+        
     #usamos recorrido in orden porque devuelve los elementos ordenados de menor a mayor
     #necesario para el reporte final de los delitos procesados
     
@@ -100,15 +105,39 @@ class ArbolAVL:
 
         # 1. Visitar subárbol IZQUIERDO (Casos menos graves)
         self.recorrido_inorden(nodo_actual.izquierdo, lista_reporte)
-
         # 2. Visitar la RAÍZ (El caso actual)
         lista_reporte.append(nodo_actual.dato)
-
         # 3. Visitar subárbol DERECHO (Casos más graves)
         self.recorrido_inorden(nodo_actual.derecho, lista_reporte)
 
+    def obtener_reporte(self):
+        lista_final=[]
+        self.recorrido_inorden(self.raiz, lista_final)
+        return lista_final
+    
     def obtener_lista_ordenada(self):
         """Método público para obtener el reporte desde el juego"""
         reporte = []
         self.recorrido_inorden(self.raiz, reporte)
         return reporte
+
+if __name__ == "__main__":
+    #prueba
+    #instanciar el arbol
+    investigacion = ArbolAVL()
+    
+    #casos de prueba
+    caso1 = CasoCriminal(1,"Injuria", "Art.220 CP", "Multa/Prision", 10)
+    caso2 = CasoCriminal(2, "Calumnia", "Art. 221 CP", "Prision 16-72 meses", 20)
+    caso3 = CasoCriminal(3,"Suplantación de sitios web", "Ley 1273 de 2009 Art. 269F","Prision 48-96 meses", 30)
+    caso4 = CasoCriminal(4,"Acceso abusivo a sistemas informaticos", "Ley 1273 de 2009 Art. 269A","Prision 48-96 meses + multa", 40)
+    
+    #Intertar en el arbol
+    investigacion.agregar_caso(caso1)
+    investigacion.agregar_caso(caso2)
+    investigacion.agregar_caso(caso3)
+    investigacion.agregar_caso(caso4)
+    
+    print("---RECUENTO DE CASOS CRIMINALES---")
+    for c in investigacion.obtener_reporte():
+        print(f"[{c.gravedad}] -> {c.tipo} (Ley:{c.ley})")
