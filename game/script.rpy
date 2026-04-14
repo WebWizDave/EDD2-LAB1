@@ -1,11 +1,12 @@
 # ── Personajes ────────────────────────────────────────────────────────────────
-define alex    = Character("Alex",     color="#9AD1FF")
-define valeria = Character("Valeria",  color="#ffb3c6")
-define rector  = Character("Director", color="#aaaaaa")
+define alex    = Character("Alex",     color="#9AD1FF", callback=name_callback, cb_name="alex")
+define valeria = Character("Valeria",  color="#ffb3c6", callback=name_callback, cb_name="valeria")
+define rector  = Character("Director", color="#aaaaaa", callback=name_callback, cb_name="rector")
 define sistema = Character("SISTEMA",  color="#cc4444")
 
 # ── Placeholders de personajes ────────────────────────────────────────────────
 layeredimage alex:
+    at sprite_highlight('alex')
     always:
         "alex_cuerpo.png"
     group expresion:
@@ -14,6 +15,7 @@ layeredimage alex:
         attribute serio:
             "alex_serio.png"
 layeredimage valeria:
+    at sprite_highlight('valeria')
     always:
         "valeria_cuerpo.png"
     always:
@@ -26,6 +28,7 @@ layeredimage valeria:
         attribute normal:
             "valeria_normal.png"
 layeredimage rector:
+    at sprite_highlight('rector')
     always:
         "rector_normal.png"
     group expresion:

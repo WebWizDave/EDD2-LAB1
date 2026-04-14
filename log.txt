@@ -1,33 +1,34 @@
-2026-04-14 19:32:52 UTC
+2026-04-14 19:52:52 UTC
 Windows-11-10.0.26200-SP0
 Ren'Py 8.5.2.26010301
 
-Early init took 28 ms
-Loading error handling took 14 ms
-Loading script took 60 ms
-Loading save slot metadata took 17 ms
+Early init took 39 ms
+Loading error handling took 17 ms
+Loading script took 133 ms
+Loading save slot metadata took 20 ms
 Loading persistent took 0 ms
-Running init code took 33 ms
-Loading analysis data took 2 ms
-Analyze and compile ATL took 0 ms
-Reloading save slot metadata took 7 ms
-Dump and make backups took 23 ms
-Cleaning cache took 1 ms
+Running init code took 36 ms
+Loading analysis data took 6 ms
+Analyze and compile ATL took 1 ms
+Reloading save slot metadata took 10 ms
+Backing up script files to 'C:\\Users\\jasso\\AppData\\Roaming/RenPy/backups\\EDD2-LAB1':
+Dump and make backups took 30 ms
+Cleaning cache took 0 ms
 Making clean stores took 0 ms
-Initial gc took 36 ms
+Initial gc took 37 ms
 DPI scale factor: 1.000000
 nvdrs: Loaded, about to disable thread optimizations.
 nvdrs: b"Couldn't load nvlib." (can be ignored)
-Creating interface object took 2 ms
+Creating interface object took 1 ms
 Init translation took 1 ms
 Cleaning stores took 0 ms
-Load screen analysis took 10 ms
-Analyze screens took 0 ms
-Save screen analysis took 1 ms
-Save pyanalysis took 0 ms
-Save bytecode took 0 ms
+Load screen analysis took 0 ms
+Analyze screens took 6 ms
+Save screen analysis took 8 ms
+Save pyanalysis took 4 ms
+Save bytecode took 16 ms
 Running _start took 0 ms
-Interface start took 175 ms
+Interface start took 170 ms
 
 Initializing gl2 renderer:
 primary display bounds: (0, 0, 2560, 1080)
@@ -39,3 +40,6 @@ Version: '4.6.0 Compatibility Profile Context 26.3.1.260309'
 Display Info: <Info({'bitsize': 32, 'bytesize': 4, 'masks': (16711680, 65280, 255, 0), 'shifts': (16, 8, 0, 0), 'losses': (0, 0, 0, 8), 'current_w': 2560, 'current_h': 1080, 'refresh_rate': 165, 'hw': False, 'wm': True, 'video_mem': 268435456, 'blit_hw': False, 'blit_hw_CC': False, 'blit_hw_A': False, 'blit_sw': False, 'blit_sw_CC': False, 'blit_sw_A': False})>
 Screen sizes: virtual=(1920, 1080) physical=(1739, 978) drawable=(1739, 978)
 Maximum texture size: 4096x4096
+Screen sizes: virtual=(1920, 1080) physical=(2560, 1009) drawable=(2560, 1009)
+Maximum texture size: 4096x4096
+Resize event: <Event(65533-VIDEORESIZE h=1009, mod=0, size=(2560, 1009), w=2560)>
