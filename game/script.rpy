@@ -1,39 +1,342 @@
-#este es el archivo main que se ejecuta en  renpy
-init python:
-    #control de errores
-    try:
-        from logic.arbol_avl import ArbolAVL
-        from logic.visualizador import VisualizadorArbol
-    except ImportError as e:
-        print(f"Error cargando la logica: {e}")
+# ── Personajes ────────────────────────────────────────────────────────────────
+define alex    = Character("Alex",     color="#9AD1FF")
+define valeria = Character("Valeria",  color="#ffb3c6")
+define rector  = Character("Director", color="#aaaaaa")
+define sistema = Character("SISTEMA",  color="#cc4444")
 
-#variables globales del juego
-define detective = Character("Alex",color="#1e3f66")
-define investigacion = ArbolAVL()
-define vis = VisualizadorArbol(investigacion)
+# ── Placeholders de personajes ────────────────────────────────────────────────
+image alex normal    = Solid("#1e3a5a")
+image alex serio     = Solid("#0f2540")
+image valeria normal = Solid("#5a2a4a")
+image valeria triste = Solid("#3a1a30")
+image rector neutral = Solid("#2a2a2a")
 
-#escenas y conversaciones de prueba, modificar con la historia principal
+# ── Fondos ────────────────────────────────────────────────────────────────────
+image bg_oficina   = im.Scale("bg_oficina_policial.webp", 1280, 720)
+image bg_salon     = Solid("#0f0f1a")
+image bg_pasillo   = Solid("#0a0a14")
+image bg_cafeteria = im.Scale("bg_cafeteria.png", 1280, 720)
+
+# ─────────────────────────────────────────────────────────────────────────────
 label start:
-    #escena inicial 
-    scene bg_oficina_policial
 
-    detective "Un nuevo caso en mi escritorio. Mmm.. Ciberacoso.. La ciudad ha estado muy movida ultimamente"
-    detective "Necesito empezar a organizar esto antes de que se salga de control."
+    # ── INTRODUCCIÓN ──────────────────────────────────────────────────────────
+    scene bg_oficina with fade
+    show alex normal at center with dissolve
 
-    detective "Primero revisaré el caso de injuria que me reportaron esta mañana."
+    alex "NetCity. Una ciudad donde todo ocurre en pantallas."
+    alex "Y donde los crímenes también."
+
+    show alex serio at center
+    alex "Llevo semanas recibiendo reportes sobre una estudiante: Valeria."
+    alex "Lo que al principio parecían bromas... se convirtió en algo más oscuro."
+    alex "Mi trabajo es organizar la evidencia. Clasificar cada delito."
+    alex "Para eso uso mi sistema: un árbol AVL. Cada caso tiene su lugar."
+    alex "Comencemos."
+
+    hide alex with dissolve
+
+    # ─────────────────────────────────────────────────────────────────────────
+    # NIVEL 1 — INJURIA
+    # ─────────────────────────────────────────────────────────────────────────
+    scene bg_salon with fade
+    show alex normal at left with dissolve
+    show valeria triste at right with dissolve
+
+    alex "Nivel 1 — Las primeras señales."
+    valeria "Alex... llevo semanas recibiendo mensajes. Me dicen cosas horribles directamente."
+    valeria "No son bromas. Son insultos deliberados, repetidos, para humillarme."
+
+    show alex serio at left
+    alex "¿Tienes capturas? ¿Sabes quién es el usuario?"
+
+    show valeria normal at right
+    valeria "Tengo capturas del chat y el nombre de usuario. Pero no sé a qué ley corresponde."
+
+    show alex normal at left
+    alex "Eso es lo que voy a determinar. Analicemos la evidencia."
+
+    hide valeria with dissolve
 
     python:
-        #insertar el caso 1
-        from logic.caso_criminal import CasoCriminal
-        caso1 = CasoCriminal(1,"Injuria","Art. 220 CP", "Multa", 10)
-        investigacion.agregar_caso(caso1)
+        ok1 = jugar_caso(
+            id_caso             = 1,
+            descripcion         = "Mensajes ofensivos repetidos hacia Valeria",
+            opciones_delito     = ["Injuria", "Calumnia", "Suplantación", "Hostigamiento"],
+            respuesta_delito    = "Injuria",
+            ley                 = "Art. 220 Código Penal",
+            pena                = "Multa",
+            gravedad_correcta   = 10,
+            evidencias_opciones = [
+                "Captura de pantalla del chat",
+                "Usuario/ID del agresor",
+                "Link a la publicación",
+            ],
+            evidencias_correctas = {
+                "Captura de pantalla del chat",
+                "Usuario/ID del agresor",
+            },
+            modo_estricto = True,
+        )
 
-        #generar la imagen con visualizador
-        vis.generar_imagen("arbol_actualizado")
-    
-    show arbol_actualizado at truecenter with fade
-    detective "listo, el sistema lo ha organizado en el nivel 1, asi se ve la investigación hasta ahora."
-    
-    detective "ahora veamos el siguiente reporte..."
-    
+    if ok1:
+        show alex serio at left
+        alex "Correcto. Mensajes que dañan el buen nombre: Injuria, Artículo 220."
+        alex "Caso insertado en el árbol. Gravedad 10 — primer nodo, raíz inicial."
+
+        python:
+            niveles = exportar_por_niveles(investigacion)
+
+        hide alex with dissolve
+        call screen arbol_avl_view(niveles)
+
+        scene bg_salon with fade
+        show alex normal at left with dissolve
+        alex "Así se ve el árbol ahora. Un solo nodo. La investigación comienza."
+        hide alex with dissolve
+
+    else:
+        show alex serio at left
+        sistema "Clasificación incorrecta. Delito, gravedad o evidencias no coinciden."
+        alex "Necesito ser más cuidadoso. Revisemos desde el principio."
+        hide alex with dissolve
+        jump nivel1
+
+    # ─────────────────────────────────────────────────────────────────────────
+    # NIVEL 2 — CALUMNIA
+    # ─────────────────────────────────────────────────────────────────────────
+    scene bg_pasillo with fade
+    show alex normal at left with dissolve
+    show valeria triste at right with dissolve
+
+    alex "Nivel 2 — El rumor viral."
+    valeria "Ahora están publicando cosas falsas sobre mí en redes sociales."
+    valeria "Dicen que hice cosas que nunca ocurrieron. Lo comparten en todo el colegio."
+
+    hide valeria with dissolve
+    show rector neutral at right with dissolve
+
+    rector "Detective, no exageremos. Son chicos. Estas cosas pasan."
+
+    show alex serio at left
+    alex "Director, difundir acusaciones falsas que dañan la reputación tiene nombre legal."
+    alex "Necesito rastrear el origen y confirmar la falsedad."
+
+    hide rector with dissolve
+
+    python:
+        ok2 = jugar_caso(
+            id_caso             = 2,
+            descripcion         = "Publicaciones falsas que dañan la reputación de Valeria",
+            opciones_delito     = ["Injuria", "Calumnia", "Suplantación", "Hostigamiento"],
+            respuesta_delito    = "Calumnia",
+            ley                 = "Art. 221 Código Penal",
+            pena                = "Multa / sanción",
+            gravedad_correcta   = 20,
+            evidencias_opciones = [
+                "Captura de la publicación falsa",
+                "Rastreo del origen (primer post)",
+                "Testimonio de un compañero",
+            ],
+            evidencias_correctas = {
+                "Captura de la publicación falsa",
+                "Rastreo del origen (primer post)",
+            },
+            modo_estricto = True,
+        )
+
+    if ok2:
+        show alex serio at left
+        alex "Calumnia. Artículo 221. Esto ya no es una broma."
+        alex "Al insertar este nodo con gravedad 20, el árbol puede necesitar reequilibrarse."
+
+        python:
+            niveles = exportar_por_niveles(investigacion)
+
+        hide alex with dissolve
+        call screen arbol_avl_view(niveles)
+
+        scene bg_pasillo with fade
+        show alex normal at left with dissolve
+        alex "¿Ves cómo el árbol mantiene su balance? Eso es el AVL en acción."
+        hide alex with dissolve
+
+    else:
+        show alex serio at left
+        sistema "Clasificación incorrecta. Revisa el tipo de delito y las evidencias."
+        hide alex with dissolve
+        jump nivel1
+
+    # ─────────────────────────────────────────────────────────────────────────
+    # NIVEL 3 — SUPLANTACIÓN
+    # ─────────────────────────────────────────────────────────────────────────
+    scene bg_salon with fade
+    show alex serio at left with dissolve
+    show valeria triste at right with dissolve
+
+    alex "Nivel 3 — La cuenta fantasma."
+    valeria "Apareció un perfil falso con mis fotos. Está publicando cosas horribles."
+    valeria "La gente cree que soy yo. Me escriben diciéndome cosas terribles."
+
+    show alex normal at left
+    alex "Esto ya es un delito informático. La Ley 1273 cubre exactamente este caso."
+    alex "Necesito evidencia del perfil y del daño causado."
+
+    hide valeria with dissolve
+
+    python:
+        ok3 = jugar_caso(
+            id_caso             = 3,
+            descripcion         = "Perfil falso con fotos de Valeria publicando contenido ofensivo",
+            opciones_delito     = ["Injuria", "Calumnia", "Suplantación", "Hostigamiento"],
+            respuesta_delito    = "Suplantación",
+            ley                 = "Ley 1273 de 2009",
+            pena                = "Prisión 48-96 meses",
+            gravedad_correcta   = 30,
+            evidencias_opciones = [
+                "Captura del perfil falso",
+                "Rastreo de la dirección de creación",
+                "Publicaciones del perfil falso",
+            ],
+            evidencias_correctas = {
+                "Captura del perfil falso",
+                "Rastreo de la dirección de creación",
+            },
+            modo_estricto = True,
+        )
+
+    if ok3:
+        show alex serio at left
+        alex "Suplantación de identidad. Ley 1273. Pena de hasta 96 meses."
+        alex "Este nodo tiene gravedad 30. El árbol necesitará una rotación."
+
+        python:
+            niveles = exportar_por_niveles(investigacion)
+
+        hide alex with dissolve
+        call screen arbol_avl_view(niveles)
+
+        scene bg_salon with fade
+        show alex normal at left with dissolve
+        alex "¿Ves cómo el árbol se reorganizó para mantenerse balanceado?"
+        alex "Eso es exactamente lo que hace el algoritmo AVL automáticamente."
+        hide alex with dissolve
+
+    else:
+        show alex serio at left
+        sistema "Clasificación incorrecta."
+        hide alex with dissolve
+        jump nivel1
+
+    # ─────────────────────────────────────────────────────────────────────────
+    # NIVEL 4 — ATAQUE COORDINADO
+    # ─────────────────────────────────────────────────────────────────────────
+    scene bg_cafeteria with fade
+    show alex serio at left with dissolve
+    show valeria triste at right with dissolve
+
+    alex "Nivel 4 — El ataque coordinado."
+    valeria "Son muchas cuentas ahora. Atacan al mismo tiempo. No puedo con esto."
+
+    show valeria normal at right
+    valeria "¿Cuándo va a terminar esto, Alex?"
+
+    show alex normal at left
+    alex "Encontré un patrón. Todas las cuentas tienen el mismo comportamiento."
+
+    show alex serio at left
+    alex "Es hostigamiento digital coordinado. Ley 1010."
+    alex "Este es el nodo más grave que hemos visto."
+
+    hide valeria with dissolve
+
+    python:
+        ok4 = jugar_caso(
+            id_caso             = 4,
+            descripcion         = "Múltiples cuentas atacando a Valeria de forma coordinada",
+            opciones_delito     = ["Injuria", "Calumnia", "Suplantación", "Hostigamiento"],
+            respuesta_delito    = "Hostigamiento",
+            ley                 = "Ley 1010 de 2006",
+            pena                = "Sanción penal + proceso judicial",
+            gravedad_correcta   = 40,
+            evidencias_opciones = [
+                "Registro de cuentas atacantes",
+                "Patrón de comportamiento coordinado",
+                "Testimonio de Valeria",
+            ],
+            evidencias_correctas = {
+                "Registro de cuentas atacantes",
+                "Patrón de comportamiento coordinado",
+            },
+            modo_estricto = True,
+        )
+
+    if ok4:
+        show alex serio at left
+        alex "Hostigamiento digital. El caso más grave del expediente."
+
+        python:
+            niveles = exportar_por_niveles(investigacion)
+
+        hide alex with dissolve
+        call screen arbol_avl_view(niveles)
+
+        scene bg_cafeteria with fade
+        show alex normal at left with dissolve
+        alex "El árbol ahora tiene cuatro nodos. Mira la estructura completa."
+        alex "Cada rotación que hizo el AVL mantuvo la búsqueda eficiente."
+        hide alex with dissolve
+
+    else:
+        show alex serio at left
+        sistema "Clasificación incorrecta."
+        hide alex with dissolve
+        jump nivel1
+
+    # ─────────────────────────────────────────────────────────────────────────
+    # NIVEL FINAL — REPORTE
+    # ─────────────────────────────────────────────────────────────────────────
+    scene bg_oficina with fade
+    show alex serio at left with dissolve
+    show rector neutral at right with dissolve
+
+    alex "Es momento de presentar el expediente completo."
+    rector "Detective... ¿qué tan grave es?"
+
+    show alex normal at left
+    alex "Usaré el recorrido in-order del árbol: de menor a mayor gravedad."
+    alex "Así queda documentada la escalada del acoso, del primer insulto al ataque final."
+
+    hide rector with dissolve
+    show valeria normal at right with dissolve
+
+    valeria "¿De verdad van a hacer algo esta vez?"
+
+    show alex serio at left
+    alex "Esta vez hay pruebas. Cuatro delitos. Cuatro leyes colombianas violadas."
+
+    python:
+        casos_reporte = investigacion.obtener_lista_ordenada()
+
+    hide alex with dissolve
+    hide valeria with dissolve
+    call screen reporte_final(casos_reporte)
+
+    scene bg_oficina with fade
+    show alex normal at left with dissolve
+    show valeria normal at right with dissolve
+    show rector neutral at center with dissolve
+
+    rector "Detective... esto es más grave de lo que pensaba."
+    alex "Exactamente. Por eso la institución no puede mirar hacia otro lado."
+    valeria "Gracias. Por primera vez alguien tomó esto en serio."
+
+    show alex serio at left
+    alex "La próxima vez que alguien diga que el ciberacoso no es grave..."
+    alex "Muéstrale este árbol."
+
+    hide alex with dissolve
+    hide valeria with dissolve
+    hide rector with dissolve
+
     return
