@@ -12,7 +12,7 @@ image valeria triste = Solid("#3a1a30")
 image rector neutral = Solid("#2a2a2a")
 
 # ── Fondos ────────────────────────────────────────────────────────────────────
-image bg_oficina   = im.Scale("bg_oficina_policial.webp", 1280, 720)
+image bg_oficina   = im.Scale("window_icon.jpg", 1920, 1080)
 image bg_salon     = Solid("#0f0f1a")
 image bg_pasillo   = Solid("#0a0a14")
 image bg_cafeteria = im.Scale("bg_cafeteria.png", 1280, 720)
