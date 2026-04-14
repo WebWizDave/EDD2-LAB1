@@ -1,26 +1,23 @@
 ﻿I'm sorry, but an uncaught exception occurred.
 
 While running game code:
-  File "game/options.rpy", line 17, in script
-    define preferences.text_cps = 40
-Exception: The define statement can not be used with the preferences namespace.
+  File "game/script.rpy", line 129, in script
+    jump nivel1
+renpy.script.LabelNotFound: could not find label 'nivel1'.
 
 -- Full Traceback ------------------------------------------------------------
 
 Traceback (most recent call last):
-  File "game/options.rpy", line 17, in script
-    define preferences.text_cps = 40
-  File "renpy/ast.py", line 2463, in execute
-    self.set()
-    ~~~~~~~~^^
-  File "renpy/ast.py", line 2479, in set
-    ns.set(self.varname, value)
-    ~~~~~~^^^^^^^^^^^^^^^^^^^^^
-  File "renpy/common/000namespaces.rpy", line 84, in set
-    raise Exception("The define statement can not be used with the preferences namespace.")
-Exception: The define statement can not be used with the preferences namespace.
+  File "game/script.rpy", line 129, in script
+    jump nivel1
+  File "renpy/ast.py", line 1928, in execute
+    rv = renpy.game.script.lookup(target)
+         ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+  File "renpy/script.py", line 1201, in lookup
+    raise LabelNotFound(original)
+renpy.script.LabelNotFound: could not find label 'nivel1'.
 
 Windows-11-10.0.26200-SP0 AMD64
 Ren'Py 8.5.2.26010301
 404: Girl Not Found 1.0
-Tue Apr 14 15:49:33 2026
+Tue Apr 14 17:34:57 2026
