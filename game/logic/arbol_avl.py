@@ -1,7 +1,5 @@
-
-from visualizador import VisualizadorArbol
-from nodo_avl import NodoAVL
-from caso_criminal import CasoCriminal
+from .nodo_avl import NodoAVL
+from .caso_criminal import CasoCriminal
 
 class ArbolAVL:
     def __init__(self):
