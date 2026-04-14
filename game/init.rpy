@@ -15,10 +15,10 @@ init python:
             return []
 
         niveles = []
-        q = deque([(raiz, 0)])
+        q = deque([(raiz, 0, 0)])
 
         while q:
-            nodo, depth = q.popleft()
+            nodo, depth, slot = q.popleft()
             if len(niveles) <= depth:
                 niveles.append([])
 
@@ -43,10 +43,11 @@ init python:
                 "balance":  bal,
                 "left":     left_id,
                 "right":    right_id,
+                "slot": slot,
             })
 
-            if izq: q.append((izq, depth + 1))
-            if der: q.append((der, depth + 1))
+            if izq: q.append((izq, depth + 1, slot * 2))
+            if der: q.append((der, depth + 1, slot * 2 + 1))
 
         return niveles
 

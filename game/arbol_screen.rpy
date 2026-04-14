@@ -37,29 +37,23 @@ init python:
 
 # ── Posiciones X por nivel (recalculadas para 1920px) ────────────────────────
 init python:
-    NODO_W    = 210
-    NODO_H    = 130
-    NIVEL_Y   = [45, 300, 555, 795]   # Y de cada nivel (escalado a 1080)
+    NODO_W  = 210
+    NODO_H  = 130
+    NIVEL_Y = [45, 300, 555, 795]
 
-    # X por nivel y posición — centradas en canvas de 1920px
-    NODO_X_POR_NIVEL = {
-        0: [855],
-        1: [405, 1305],
-        2: [210, 600, 1000, 1390],
-        3: [112, 322, 532, 742, 960, 1170, 1380, 1590],
-    }
-
-    def posicion_nodo(nivel, idx_en_nivel):
-        xs = NODO_X_POR_NIVEL.get(nivel, [])
-        if idx_en_nivel < len(xs):
-            return xs[idx_en_nivel], NIVEL_Y[nivel] if nivel < len(NIVEL_Y) else 45 + nivel * 255
-        return 855, 45 + nivel * 255
+    def posicion_nodo(nivel, slot):
+        # Divide el canvas en slots según el nivel
+        num_slots = 2 ** nivel
+        slot_w    = 1920 / num_slots
+        x = int(slot * slot_w + slot_w / 2 - NODO_W / 2)
+        y = NIVEL_Y[nivel] if nivel < len(NIVEL_Y) else 45 + nivel * 255
+        return x, y
 
     def construir_posiciones(niveles):
         pos = {}
         for nivel_idx, nivel in enumerate(niveles):
-            for pos_idx, nodo in enumerate(nivel):
-                x, y = posicion_nodo(nivel_idx, pos_idx)
+            for nodo in nivel:
+                x, y = posicion_nodo(nivel_idx, nodo["slot"])  # ← usa slot
                 pos[nodo["id"]] = (x + NODO_W // 2, y + NODO_H // 2)
         return pos
 
@@ -141,7 +135,7 @@ screen arbol_avl_view(niveles):
             for nivel_idx, nivel in enumerate(niveles):
                 for pos_idx, nodo in enumerate(nivel):
                     python:
-                        nx, ny = posicion_nodo(nivel_idx, pos_idx)
+                        nx, ny = posicion_nodo(nivel_idx, nodo["slot"])
                         fn, fb = color_nodo(nodo["gravedad"])
                         etiq   = etiqueta_gravedad(nodo["gravedad"])
                         cb     = color_bal(nodo["balance"])
