@@ -43,7 +43,8 @@ image bg_director = im.Scale("bg_director.png", 1920, 1080)
 label start:
 
     # ── INTRODUCCIÓN ──────────────────────────────────────────────────────────
-    scene bg_oficina with fade
+    play music "audio/musica_fondo.mp3" fadein 1.0
+    scene bg_ciudad with fade
     show alex normal at center with dissolve
 
     alex "NetCity. Una ciudad donde todo ocurre en pantallas."
