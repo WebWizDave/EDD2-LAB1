@@ -1,8 +1,8 @@
 # ── Personajes ────────────────────────────────────────────────────────────────
-define alex    = Character("Alex",     color="#9AD1FF", callback=name_callback, cb_name="alex")
-define valeria = Character("Valeria",  color="#ffb3c6", callback=name_callback, cb_name="valeria")
-define rector  = Character("Director", color="#aaaaaa", callback=name_callback, cb_name="rector")
-define sistema = Character("SISTEMA",  color="#cc4444")
+define alex    = Character("Alex",     color="#9AD1FF", what_slow_cps = 40, callback=name_callback, cb_name="alex")
+define valeria = Character("Valeria",  color="#ffb3c6", what_slow_cps = 35, callback=name_callback, cb_name="valeria")
+define rector  = Character("Director", color="#aaaaaa", what_slow_cps = 30, callback=name_callback, cb_name="rector")
+define sistema = Character("SISTEMA",  color="#cc4444", what_slow_cps = 25)
 
 # ── Placeholders de personajes ────────────────────────────────────────────────
 layeredimage alex:
