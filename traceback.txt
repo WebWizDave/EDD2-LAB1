@@ -1,23 +1,23 @@
 ﻿I'm sorry, but an uncaught exception occurred.
 
 While running game code:
-  File "game/script.rpy", line 103, in script
+  File "game/script.rpy", line 187, in script
     jump nivel1
 renpy.script.LabelNotFound: could not find label 'nivel1'.
 
 -- Full Traceback ------------------------------------------------------------
 
 Traceback (most recent call last):
-  File "game/script.rpy", line 103, in script
+  File "game/script.rpy", line 187, in script
     jump nivel1
-  File "renpy/ast.py", line 1956, in execute
+  File "renpy/ast.py", line 1928, in execute
     rv = renpy.game.script.lookup(target)
          ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
-  File "renpy/script.py", line 1151, in lookup
+  File "renpy/script.py", line 1201, in lookup
     raise LabelNotFound(original)
 renpy.script.LabelNotFound: could not find label 'nivel1'.
 
 Windows-11-10.0.26200-SP0 AMD64
-Ren'Py 8.6.0.26040404+nightly
+Ren'Py 8.5.2.26010301
 404: Girl Not Found 1.0
-Mon Apr 13 22:39:23 2026
+Tue Apr 14 01:00:28 2026

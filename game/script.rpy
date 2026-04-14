@@ -5,17 +5,39 @@ define rector  = Character("Director", color="#aaaaaa")
 define sistema = Character("SISTEMA",  color="#cc4444")
 
 # ── Placeholders de personajes ────────────────────────────────────────────────
-image alex normal    = Solid("#1e3a5a")
-image alex serio     = Solid("#0f2540")
-image valeria normal = Solid("#5a2a4a")
-image valeria triste = Solid("#3a1a30")
-image rector neutral = Solid("#2a2a2a")
+layeredimage alex:
+    always:
+        "alex_cuerpo.png"
+    group expresion:
+        attribute normal:
+            "alex_normal.png"
+        attribute serio:
+            "alex_serio.png"
+layeredimage valeria:
+    always:
+        "valeria_cuerpo.png"
+    always:
+        "valeria_uniforme.png"
+    always:
+        "valeria_zapatos.png"
+    group expresion:
+        attribute triste:
+            "valeria_triste.png"
+        attribute normal:
+            "valeria_normal.png"
+layeredimage rector:
+    always:
+        "rector_normal.png"
+    group expresion:
+        attribute neutral:
+            "rector_neutral.png"
 
 # ── Fondos ────────────────────────────────────────────────────────────────────
-image bg_oficina   = im.Scale("window_icon.jpg", 1920, 1080)
-image bg_salon     = Solid("#0f0f1a")
-image bg_pasillo   = Solid("#0a0a14")
-image bg_cafeteria = im.Scale("bg_cafeteria.png", 1280, 720)
+image bg_oficina   = im.Scale("bg_oficina.png", 1920, 1080)
+image bg_salon     = im.Scale("bg_salon.png", 1920, 1080)
+image bg_pasillo   = im.Scale("bg_pasillo.png", 1920, 1080)
+image bg_ciudad = im.Scale("bg_ciudad.png", 1920, 1080)
+image bg_director = im.Scale("bg_director.png", 1920, 1080)
 
 # ─────────────────────────────────────────────────────────────────────────────
 label start:
@@ -114,6 +136,9 @@ label start:
     valeria "Dicen que hice cosas que nunca ocurrieron. Lo comparten en todo el colegio."
 
     hide valeria with dissolve
+    hide alex with dissolve
+    scene bg_director with fade
+    show alex normal at left with dissolve
     show rector neutral at right with dissolve
 
     rector "Detective, no exageremos. Son chicos. Estas cosas pasan."
@@ -231,7 +256,7 @@ label start:
     # ─────────────────────────────────────────────────────────────────────────
     # NIVEL 4 — ATAQUE COORDINADO
     # ─────────────────────────────────────────────────────────────────────────
-    scene bg_cafeteria with fade
+    scene bg_ciudad with fade
     show alex serio at left with dissolve
     show valeria triste at right with dissolve
 
@@ -281,7 +306,7 @@ label start:
         hide alex with dissolve
         call screen arbol_avl_view(niveles)
 
-        scene bg_cafeteria with fade
+        scene bg_ciudad with fade
         show alex normal at left with dissolve
         alex "El árbol ahora tiene cuatro nodos. Mira la estructura completa."
         alex "Cada rotación que hizo el AVL mantuvo la búsqueda eficiente."
