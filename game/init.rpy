@@ -68,34 +68,26 @@ init python:
         while True:
 
             evidencias = []
+            opciones_disponibles = list(evidencias_opciones)
 
-            # Evidencias aleatorias
-            cantidad = random.randint(2, len(evidencias_opciones))
-            evidencias_random = random.sample(evidencias_opciones, cantidad)
+            while True:
+                menu_items = [("📋 " + ev, ev) for ev in opciones_disponibles if ev not in evidencias]
+                menu_items += [("✔ " + ev + " (recolectada)", None) for ev in evidencias]
+                menu_items += [("➤ Continuar con la investigación", "listo")]
 
-            renpy.say(sistema, "Analizando evidencias disponibles...")
+                r = renpy.display_menu(menu_items)
 
-            #Recolección
-            for ev in evidencias_random:
-                r = renpy.display_menu([
-                    ("Recolectar evidencia: " + ev, True),
-                    ("Ignorar", False),
-                ])
-                if r:
-                    evidencias.append(ev)
+                if r == "listo":
+                    break
+                elif r is not None:
+                    evidencias.append(r)
 
             # Evento aleatorio
             evento = random.randint(1, 3)
-
             if evento == 1:
-                renpy.say(sistema, "Una evidencia se ha perdido.")
-                if evidencias:
-                    evidencias.pop()
-
+                renpy.say(sistema, "Advertencia: algunas evidencias pueden estar comprometidas.")
             elif evento == 2:
-                nueva = "Registro oculto del sistema"
-                renpy.say(sistema, "Nueva evidencia encontrada.")
-                evidencias.append(nueva)
+                renpy.say(sistema, "Nueva señal detectada en el sistema. Mantente alerta.")
 
             # Opciones mezcladas
             opciones_random = random.sample(opciones_delito, len(opciones_delito))
@@ -119,9 +111,9 @@ init python:
                 caso.evidencias = evidencias
                 investigacion.agregar_caso(caso)
                 return True
+            elif not ok_evidencias:
+                renpy.say(sistema, "Faltan evidencias claves. Revisa lo que recolectaste.")
             elif not ok_delito:
                 renpy.say(sistema, "El tipo de delito no es correcto. Vuelve a intentarlo.")
             elif not ok_gravedad:
                 renpy.say(sistema, "La gravedad no coincide con el caso. Vuelve a intentarlo.")
-            elif not ok_evidencias:
-                renpy.say(sistema, "Faltan evidencias claves. Vuelve a intentarlo.")
