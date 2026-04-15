@@ -49,6 +49,26 @@ label start:
     # ── INTRODUCCIÓN ──────────────────────────────────────────────────────────
     play music "audio/musica_fondo.mp3" fadein 1.0
     scene bg_ciudad with fade
+    
+    # ── MENÚ DE SELECCIÓN INCLUSIVA ──────────────────────────────────────────
+    "SISTEMA: Configurando interfaz de usuario y perfil del agente..."
+
+    menu:
+        "Selecciona la apariencia del Detective Alex para esta investigación:"
+
+        "Perfil A (Masculino)":
+            $ alex_tipo = "m"
+            "Perfil Alfa seleccionado."
+
+        "Perfil B (Femenino)":
+            $ alex_tipo = "f"
+            "Perfil Beta seleccionado."
+
+        "Perfil C (No Binario)":
+            $ alex_tipo = "n"
+            "Perfil Gamma seleccionado."
+
+    # ── INTRODUCCIÓN CON EL DETECTIVE YA CONFIGURADO ──────────────────────────
     show alex normal at center with dissolve
 
     alex "NetCity. Una ciudad donde todo ocurre en pantallas."
