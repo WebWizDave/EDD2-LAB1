@@ -3,6 +3,7 @@ init python:
     from logic.arbol_avl import ArbolAVL
     from logic.caso_criminal import CasoCriminal
     from collections import deque
+    import random
 
     # Estado global
     investigacion = ArbolAVL()
@@ -64,42 +65,63 @@ init python:
         evidencias_correctas,
         modo_estricto=True,
     ):
-        """Retorna True si el jugador clasifica e inserta bien; False si falla."""
+        while True:
 
-        evidencias = []
+            evidencias = []
 
-        # 1) Recolectar evidencias (sí/no por cada una)
-        for ev in evidencias_opciones:
-            r = renpy.display_menu([
-                ("Recolectar evidencia: " + ev, True),
-                ("Ignorar", False),
+            # Evidencias aleatorias
+            cantidad = random.randint(2, len(evidencias_opciones))
+            evidencias_random = random.sample(evidencias_opciones, cantidad)
+
+            renpy.say(sistema, "Analizando evidencias disponibles...")
+
+            #Recolección
+            for ev in evidencias_random:
+                r = renpy.display_menu([
+                    ("Recolectar evidencia: " + ev, True),
+                    ("Ignorar", False),
+                ])
+                if r:
+                    evidencias.append(ev)
+
+            # Evento aleatorio
+            evento = random.randint(1, 3)
+
+            if evento == 1:
+                renpy.say(sistema, "Una evidencia se ha perdido.")
+                if evidencias:
+                    evidencias.pop()
+
+            elif evento == 2:
+                nueva = "Registro oculto del sistema"
+                renpy.say(sistema, "Nueva evidencia encontrada.")
+                evidencias.append(nueva)
+
+            # Opciones mezcladas
+            opciones_random = random.sample(opciones_delito, len(opciones_delito))
+            delito = renpy.display_menu([(d, d) for d in opciones_random])
+
+            # Gravedad en orden aleatorio
+            gravedad_opciones = [10, 20, 30, 40]
+            random.shuffle(gravedad_opciones)
+
+            gravedad = renpy.display_menu([
+                (f"{g} (Nivel {g//10})", g) for g in gravedad_opciones
             ])
-            if r:
-                evidencias.append(ev)
-        
-        # 2) Elegir delito
-        delito = renpy.display_menu([(d, d) for d in opciones_delito])
 
-        # 3) Elegir gravedad / nivel
-        gravedad = renpy.display_menu([
-            ("10 (Nivel 1)", 10),
-            ("20 (Nivel 2)", 20),
-            ("30 (Nivel 3)", 30),
-            ("40 (Nivel 4)", 40),
-        ])
-
-        ok_delito = (delito.strip().lower() == respuesta_delito.strip().lower())        
-        ok_gravedad = (gravedad == gravedad_correcta)
-
-        if modo_estricto:
-            ok_evidencias = set(evidencias_correctas).issubset(set(evidencias))        
-        else:
+            # VALIDACIONES
+            ok_delito = (delito.strip().lower() == respuesta_delito.strip().lower())
+            ok_gravedad = (gravedad == gravedad_correcta)
             ok_evidencias = set(evidencias_correctas).issubset(set(evidencias))
 
-        if ok_delito and ok_gravedad and ok_evidencias:
-            caso = CasoCriminal(id_caso, delito, ley, pena, gravedad)
-            caso.evidencias = evidencias
-            investigacion.agregar_caso(caso)
-            return True
-
-        return False
+            if ok_delito and ok_gravedad and ok_evidencias:
+                caso = CasoCriminal(id_caso, delito, ley, pena, gravedad)
+                caso.evidencias = evidencias
+                investigacion.agregar_caso(caso)
+                return True
+            elif not ok_delito:
+                renpy.say(sistema, "El tipo de delito no es correcto. Vuelve a intentarlo.")
+            elif not ok_gravedad:
+                renpy.say(sistema, "La gravedad no coincide con el caso. Vuelve a intentarlo.")
+            elif not ok_evidencias:
+                renpy.say(sistema, "Faltan evidencias claves. Vuelve a intentarlo.")

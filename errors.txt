@@ -2,9 +2,9 @@
 errors listed below, and try again.
 
 
-File "game/options.rpy", line 64: invalid syntax
-    "musica_menu.mp3" fadein 1.0
-                      ^^^^^^
+File "game/init.rpy", line 69: expected an indented block after function definition on line 57
+    evidencias = []
+    ^^^^^^^^^^
 
 Ren'Py Version: Ren'Py 8.5.2.26010301
-Tue Apr 14 17:45:24 2026
+Tue Apr 14 22:30:06 2026
