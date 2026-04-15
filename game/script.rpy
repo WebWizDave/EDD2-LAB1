@@ -1,4 +1,5 @@
 # ── Personajes ────────────────────────────────────────────────────────────────
+default alex_tipo = "m"  # "m" para masculino, "f" para femenino, "n" para neutro
 define alex    = Character("Alex",     color="#9AD1FF", what_slow_cps = 40, callback=name_callback, cb_name="alex")
 define valeria = Character("Valeria",  color="#ffb3c6", what_slow_cps = 35, callback=name_callback, cb_name="valeria")
 define rector  = Character("Director", color="#aaaaaa", what_slow_cps = 30, callback=name_callback, cb_name="rector")
@@ -8,12 +9,12 @@ define sistema = Character("SISTEMA",  color="#cc4444", what_slow_cps = 25)
 layeredimage alex:
     at sprite_highlight('alex')
     always:
-        "alex_cuerpo.png"
+        "[alex_tipo]_alex_cuerpo.png"
     group expresion:
         attribute normal:
-            "alex_normal.png"
+            "[alex_tipo]_alex_normal.png"
         attribute serio:
-            "alex_serio.png"
+            "[alex_tipo]_alex_serio.png"
 layeredimage valeria:
     at sprite_highlight('valeria')
     always:
