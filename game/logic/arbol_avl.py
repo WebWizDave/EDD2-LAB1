@@ -108,12 +108,7 @@ class ArbolAVL:
         lista_reporte.append(nodo_actual.dato)
         # 3. Visitar subárbol DERECHO (Casos más graves)
         self.recorrido_inorden(nodo_actual.derecho, lista_reporte)
-
-    def obtener_reporte(self):
-        lista_final=[]
-        self.recorrido_inorden(self.raiz, lista_final)
-        return lista_final
-    
+   
     def obtener_lista_ordenada(self):
         """Método público para obtener el reporte desde el juego"""
         reporte = []
