@@ -30,7 +30,7 @@ layeredimage valeria:
 layeredimage rector:
     at sprite_highlight('rector')
     always:
-        "rector_normal.png"
+        "rector_cuerpo.png"
     group expresion:
         attribute neutral:
             "rector_neutral.png"
@@ -126,7 +126,7 @@ label start:
         sistema "Clasificación incorrecta. Delito, gravedad o evidencias no coinciden."
         alex "Necesito ser más cuidadoso. Revisemos desde el principio."
         hide alex with dissolve
-        jump nivel1
+        jump start
 
     # ─────────────────────────────────────────────────────────────────────────
     # NIVEL 2 — CALUMNIA
@@ -194,7 +194,7 @@ label start:
         show alex serio at left
         sistema "Clasificación incorrecta. Revisa el tipo de delito y las evidencias."
         hide alex with dissolve
-        jump nivel1
+        jump start
 
     # ─────────────────────────────────────────────────────────────────────────
     # NIVEL 3 — SUPLANTACIÓN
@@ -255,7 +255,7 @@ label start:
         show alex serio at left
         sistema "Clasificación incorrecta."
         hide alex with dissolve
-        jump nivel1
+        jump start
 
     # ─────────────────────────────────────────────────────────────────────────
     # NIVEL 4 — ATAQUE COORDINADO
@@ -320,7 +320,7 @@ label start:
         show alex serio at left
         sistema "Clasificación incorrecta."
         hide alex with dissolve
-        jump nivel1
+        jump start
 
     # ─────────────────────────────────────────────────────────────────────────
     # NIVEL FINAL — REPORTE

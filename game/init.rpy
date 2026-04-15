@@ -76,7 +76,7 @@ init python:
             ])
             if r:
                 evidencias.append(ev)
-
+        
         # 2) Elegir delito
         delito = renpy.display_menu([(d, d) for d in opciones_delito])
 
