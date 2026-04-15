@@ -1,23 +1,59 @@
 ﻿I'm sorry, but an uncaught exception occurred.
 
 While running game code:
-  File "game/script.rpy", line 129, in script
-    jump nivel1
-renpy.script.LabelNotFound: could not find label 'nivel1'.
+  File "game/script.rpy", line 72, in script
+    show alex normal at center with dissolve
+Exception: DynamicImage '[alex_tipo]_alex_cuerpo.png': could not find image. ('m_alex_cuerpo.png')
 
 -- Full Traceback ------------------------------------------------------------
 
 Traceback (most recent call last):
-  File "game/script.rpy", line 129, in script
-    jump nivel1
-  File "renpy/ast.py", line 1928, in execute
-    rv = renpy.game.script.lookup(target)
-         ~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
-  File "renpy/script.py", line 1201, in lookup
-    raise LabelNotFound(original)
-renpy.script.LabelNotFound: could not find label 'nivel1'.
+  File "game/script.rpy", line 72, in script
+    show alex normal at center with dissolve
+  File "renpy/ast.py", line 1357, in execute
+    show_imspec(self.imspec, atl=getattr(self, "atl", None))
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "renpy/ast.py", line 730, in show_imspec
+    renpy.config.show(
+    ~~~~~~~~~~~~~~~~~^
+        name, at_list=at_list, layer=layer, what=expression, zorder=zorder, tag=tag, behind=behind, atl=atl
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "renpy/exports/displayexports.py", line 513, in show
+    sls.add(
+    ~~~~~~~^
+        layer,
+        ^^^^^^
+    ...<8 lines>...
+        transient=transient,
+        ^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "renpy/display/scenelists.py", line 464, in add
+    thing.visit_all(lambda d: None)
+    ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "renpy/display/displayable.py", line 457, in visit_all
+    d.visit_all(callback, seen)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "renpy/display/displayable.py", line 457, in visit_all
+    d.visit_all(callback, seen)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "renpy/display/displayable.py", line 457, in visit_all
+    d.visit_all(callback, seen)
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^
+[Previous line repeated 1 more time]
+  File "renpy/display/displayable.py", line 448, in visit_all
+    for d in self.visit():
+             ~~~~~~~~~~^^ 
+  File "renpy/display/image.py", line 799, in visit
+    self.find_target()
+    ~~~~~~~~~~~~~~~~^^
+  File "renpy/display/image.py", line 699, in find_target
+    raise Exception(error)
+Exception: DynamicImage '[alex_tipo]_alex_cuerpo.png': could not find image. ('m_alex_cuerpo.png')
 
-Windows-11-10.0.26200-SP0 AMD64
+macOS-26.2-arm64-arm-64bit arm64
 Ren'Py 8.5.2.26010301
 404: Girl Not Found 1.0
-Tue Apr 14 17:34:57 2026
+Wed Apr 15 16:46:27 2026
