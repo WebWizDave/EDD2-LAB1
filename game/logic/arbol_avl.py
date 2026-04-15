@@ -140,7 +140,3 @@ if __name__ == "__main__":
     print("---RECUENTO DE CASOS CRIMINALES---")
     for c in investigacion.obtener_reporte():
         print(f"[{c.gravedad}] -> {c.tipo} (Ley:{c.ley})")
-    
-    #prueba de nodos visuales con graphviz  
-    vis = VisualizadorArbol(investigacion)
-    vis.generar_imagen("prueba_avl")
