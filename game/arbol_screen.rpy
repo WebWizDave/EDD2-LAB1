@@ -37,8 +37,8 @@ init python:
 
 # ── Posiciones X por nivel (recalculadas para 1920px) ────────────────────────
 init python:
-    NODO_W  = 210
-    NODO_H  = 130
+    NODO_W  = 250   
+    NODO_H  = 160
     NIVEL_Y = [45, 300, 555, 795]
 
     def posicion_nodo(nivel, slot):
@@ -164,10 +164,10 @@ screen arbol_avl_view(niveles):
                             xpos 10 ypos 8
                             spacing 4
 
-                            text etiq color fb size 11
-                            text "ID [nodo['id']] — [tipo_t]" color COLOR_NODO_TEXTO size 13 bold True
-                            text "[ley_t]" color "#a09070" size 11
-                            text "Pena: [nodo['pena']]" color "#a09070" size 11
+                            text etiq color fb size 14
+                            text "ID [nodo['id']] — [tipo_t]" color COLOR_NODO_TEXTO size 16 bold True
+                            text "[ley_t]" color "#a09070" size 14
+                            text "Pena: [nodo['pena']]" color "#a09070" size 14
 
                             frame:
                                 xsize 190 ysize 1
@@ -175,8 +175,8 @@ screen arbol_avl_view(niveles):
 
                             hbox:
                                 spacing 12
-                                text "bal: [nodo['balance']]" color cb size 11
-                                text "L:[nodo['left']]  R:[nodo['right']]" color "#706050" size 11
+                                text "bal: [nodo['balance']]" color cb size 14
+                                text "L:[nodo['left']]  R:[nodo['right']]" color "#706050" size 14
 
                     # Chinche
                     frame:
@@ -263,7 +263,7 @@ screen reporte_final(casos_ordenados):
             padding (40, 18)
             vbox:
                 text "EXPEDIENTE FINAL — CASO VALERIA" color "#9AD1FF" size 26 bold True
-                text "CyberDetective: El Árbol de la Verdad" color "#5a8aaa" size 16
+                text "404: GIRL NOT FOUND" color "#5a8aaa" size 16
 
         # Tabla de casos
         viewport:
@@ -278,16 +278,16 @@ screen reporte_final(casos_ordenados):
 
                 # Encabezados
                 frame:
-                    xsize 1700 ysize 40
+                    xsize 1700 ysize 55
                     background Solid("#1a2a3a")
                     padding (10, 8)
                     hbox:
                         spacing 0
-                        text "ID"        color "#9AD1FF" size 15 xsize 80
-                        text "DELITO"    color "#9AD1FF" size 15 xsize 430
-                        text "LEY"       color "#9AD1FF" size 15 xsize 460
-                        text "PENA"      color "#9AD1FF" size 15 xsize 400
-                        text "GRAVEDAD"  color "#9AD1FF" size 15 xsize 180
+                        text "ID"        color "#9AD1FF" size 20 xsize 80
+                        text "DELITO"    color "#9AD1FF" size 20 xsize 430
+                        text "LEY"       color "#9AD1FF" size 20 xsize 460
+                        text "PENA"      color "#9AD1FF" size 20 xsize 400
+                        text "GRAVEDAD"  color "#9AD1FF" size 20 xsize 180
 
                 for i, caso in enumerate(casos_ordenados):
                     python:
@@ -301,11 +301,11 @@ screen reporte_final(casos_ordenados):
 
                         hbox:
                             spacing 0
-                            text "#[caso.id_caso]"   color "#c8c4b8" size 15 xsize 80
-                            text "[caso.tipo]"        color "#e0dcc8" size 15 xsize 430
-                            text "[caso.ley]"         color "#a09880" size 15 xsize 460
-                            text "[caso.pena]"        color "#a09880" size 15 xsize 400
-                            text "[caso.gravedad]"    color fb        size 15 xsize 180 bold True
+                            text "#[caso.id_caso]"   color "#c8c4b8" size 20 xsize 80
+                            text "[caso.tipo]"        color "#e0dcc8" size 20 xsize 430
+                            text "[caso.ley]"         color "#a09880" size 20 xsize 460
+                            text "[caso.pena]"        color "#a09880" size 20 xsize 400
+                            text "[caso.gravedad]"    color fb        size 20 xsize 180 bold True
 
         # Pie
         frame:

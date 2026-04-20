@@ -64,7 +64,7 @@ class ArbolAVL:
         # 2. actualizar la altura 
         nodo_actual.altura = 1 + max(self.obtener_altura(nodo_actual.izquierdo), self.obtener_altura(nodo_actual.derecho))
 
-        # 3. obtener el factor de equilibrio 
+        # 3. obtener el factor de equilibrio
         balance = self.obtener_balance(nodo_actual)
 
         # 4. casos de desbalance:

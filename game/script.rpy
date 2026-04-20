@@ -6,15 +6,33 @@ define rector  = Character("Director", color="#aaaaaa", what_slow_cps = 30, call
 define sistema = Character("SISTEMA",  color="#cc4444", what_slow_cps = 25)
 
 # ── Placeholders de personajes ────────────────────────────────────────────────
+image alex_cuerpo = ConditionSwitch(
+    "alex_tipo == 'm'", "m_alex_cuerpo.png",
+    "alex_tipo == 'f'", "f_alex_cuerpo.png",
+    "alex_tipo == 'n'", "n_alex_cuerpo.png",
+)
+
+image alex_normal = ConditionSwitch(
+    "alex_tipo == 'm'", "m_alex_normal.png",
+    "alex_tipo == 'f'", "f_alex_normal.png",
+    "alex_tipo == 'n'", "n_alex_normal.png",
+)
+
+image alex_serio = ConditionSwitch(
+    "alex_tipo == 'm'", "m_alex_serio.png",
+    "alex_tipo == 'f'", "f_alex_serio.png",
+    "alex_tipo == 'n'", "n_alex_serio.png",
+)
+
 layeredimage alex:
     at sprite_highlight('alex')
     always:
-        "[alex_tipo]_alex_cuerpo.png"
+        "alex_cuerpo"
     group expresion:
         attribute normal:
-            "[alex_tipo]_alex_normal.png"
+            "alex_normal"
         attribute serio:
-            "[alex_tipo]_alex_serio.png"
+            "alex_serio"
 layeredimage valeria:
     at sprite_highlight('valeria')
     always:
@@ -45,12 +63,43 @@ image bg_director = im.Scale("bg_director.png", 1920, 1080)
 
 # ─────────────────────────────────────────────────────────────────────────────
 label start:
-
+    
     # ── INTRODUCCIÓN ──────────────────────────────────────────────────────────
     play music "audio/musica_fondo.mp3" fadein 1.0
-    scene bg_ciudad with fade
+
+    # ── MENÚ DE GUÍA INICIAL ──────────────────────────────────────────────────────
+label menu_tutorial:
+    scene bg_salon 
+    
+    menu:
+        sistema "SISTEMA NETCITY INICIADO. Seleccione un módulo de información:"
+
+        "1. Las reglas del juego":
+            sistema "Tu objetivo es construir un expediente sólido clasificando correctamente los casos de ciberacoso de Valeria."
+            sistema "Deberás emparejar cada situación con su delito correspondiente, la ley colombiana que lo penaliza y su nivel de gravedad."
+            sistema "Solo los casos correctamente clasificados serán admitidos en la estructura de datos de la investigación."
+            jump menu_tutorial
+
+        "2. Cómo funciona el árbol de datos (Árbol AVL)":
+            sistema "El núcleo de este sistema es un Árbol Binario de Búsqueda Balanceado (AVL)."
+            sistema "Cada caso se inserta como un nodo. El valor clave para organizarlos es el nivel de 'gravedad' del delito (10, 20, 30 o 40)."
+            sistema "Si la diferencia de altura entre el lado izquierdo y derecho de un nodo supera 1 o es menor a -1, el sistema se desbalancea."
+            sistema "Para corregirlo y mantener las búsquedas optimizadas, el árbol ejecutará rotaciones automáticas (simples o dobles, hacia la izquierda o derecha)."
+            sistema "Al finalizar el juego, el sistema usará un 'recorrido in-order' para generar tu reporte final, ordenando los delitos desde el menos grave hasta el más severo."
+            jump menu_tutorial
+
+        "3. Cómo investigar cada caso":
+            sistema "1. Escucha el testimonio para entender el contexto."
+            sistema "2. Analiza las opciones de evidencia y selecciona las que prueben el delito."
+            sistema "3. Determina el tipo de delito (Injuria, Calumnia, Suplantación, etc.)."
+            sistema "Si te equivocas en la gravedad, la evidencia o la ley, la inserción en el árbol fallará y deberás reevaluar el caso."
+            jump menu_tutorial
+
+        "Todo claro. Iniciar partida":
+            sistema "Cargando primer caso... Preparando raíz del árbol..."
     
     # ── MENÚ DE SELECCIÓN INCLUSIVA ──────────────────────────────────────────
+    scene bg_ciudad with fade
     "SISTEMA: Configurando interfaz de usuario y perfil del agente..."
 
     menu:
