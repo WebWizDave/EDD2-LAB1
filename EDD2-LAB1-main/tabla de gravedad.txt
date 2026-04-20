@@ -1,6 +1,0 @@
-Delito (Nivel)Gravedad,        (Sugerida),               Ley Aplicable,
-
-Injuria (Nivel 1),	               10,	                 Art. 220 Código Penal,
-Calumnia (Nivel 2),                20,	                 Art. 221 Código Penal,
-Suplantación (Nivel 3),            30,	                 Ley 1273 de 2009,
-Acoso/Hostigamiento (Nivel 4)	   40,	                 Amenazas/Hostigamiento,
