@@ -1,4 +1,4 @@
-from .nodo_avl import NodoAVL
+from .nodo_avl import Nodo, NodoAVL
 from .caso_criminal import CasoCriminal
 
 class ArbolAVL:
@@ -14,7 +14,7 @@ class ArbolAVL:
     def obtener_balance(self, nodo):
         if not nodo:
             return 0
-        return self.obtener_altura(nodo.izquierdo) - self.obtener_altura(nodo.derecho)
+        return self.obtener_altura(nodo.izquierda) - self.obtener_altura(nodo.derecha)
     
     #rotaciones simples
     def rotacion_derecha(self, y):
@@ -47,47 +47,27 @@ class ArbolAVL:
         y.altura = 1 + max(self.obtener_altura(y.izquierdo), self.obtener_altura(y.derecho))
 
         return y
-    
-    
-    def insertar(self, nodo_actual, caso_nuevo):
-        # 1. insercion normal
-        if not nodo_actual:
-            return NodoAVL(caso_nuevo)
+     
+    def insertar_pista(self, dato, peso_real, descripcion=""):
+        """Inserta una pista sin balancear automáticamente."""
+        self.raiz = self._insertar_recursivo(self.raiz, dato, peso_real, descripcion)
 
-        if caso_nuevo.gravedad < nodo_actual.dato.gravedad:
-            nodo_actual.izquierdo = self.insertar(nodo_actual.izquierdo, caso_nuevo)
-        elif caso_nuevo.gravedad > nodo_actual.dato.gravedad:
-            nodo_actual.derecho = self.insertar(nodo_actual.derecho, caso_nuevo)
+    def _insertar_recursivo(self, nodo, dato, peso_real, descripcion):
+        # 1. Inserción normal de Árbol Binario de Búsqueda
+        if not nodo:
+            return Nodo(dato, peso_real, descripcion)
+        
+        if dato < nodo.dato:
+            nodo.izquierda = self._insertar_recursivo(nodo.izquierda, dato, peso_real, descripcion)
+        elif dato > nodo.dato:
+            nodo.derecha = self._insertar_recursivo(nodo.derecha, dato, peso_real, descripcion)
         else:
-            return nodo_actual 
+            return nodo # No duplicados por ahora
 
-        # 2. actualizar la altura 
-        nodo_actual.altura = 1 + max(self.obtener_altura(nodo_actual.izquierdo), self.obtener_altura(nodo_actual.derecho))
-
-        # 3. obtener el factor de equilibrio
-        balance = self.obtener_balance(nodo_actual)
-
-        # 4. casos de desbalance:
-
-        # Caso Izquierda-Izquierda (Simple Derecha)
-        if balance > 1 and caso_nuevo.gravedad < nodo_actual.izquierdo.dato.gravedad:
-            return self.rotacion_derecha(nodo_actual)
-
-        # Caso Derecha-Derecha (Simple Izquierda)
-        if balance < -1 and caso_nuevo.gravedad > nodo_actual.derecho.dato.gravedad:
-            return self.rotacion_izquierda(nodo_actual)
-
-        # Caso Izquierda-Derecha (Doble Derecha)
-        if balance > 1 and caso_nuevo.gravedad > nodo_actual.izquierdo.dato.gravedad:
-            nodo_actual.izquierdo = self.rotacion_izquierda(nodo_actual.izquierdo)
-            return self.rotacion_derecha(nodo_actual)
-
-        # Caso Derecha-Izquierda (Doble Izquierda)
-        if balance < -1 and caso_nuevo.gravedad < nodo_actual.derecho.dato.gravedad:
-            nodo_actual.derecho = self.rotacion_derecha(nodo_actual.derecho)
-            return self.rotacion_izquierda(nodo_actual)
-
-        return nodo_actual
+        # 2. Actualizamos la altura basándonos en el peso máximo de los hijos + el propio
+        nodo.altura = peso_real + max(self.obtener_altura(nodo.izquierda), self.obtener_altura(nodo.derecha))
+        
+        return nodo
     
     #metodo para agregar los caso mas facil
     def agregar_caso(self, nuevo_caso):
@@ -115,6 +95,35 @@ class ArbolAVL:
         self.recorrido_inorden(self.raiz, reporte)
         return reporte
 
+    def ejecutar_rotacion_derecha(self, dato_padre):
+        """Busca el nodo con el dato_padre y lo rota a la derecha."""
+        self.raiz = self._buscar_y_rotar_der(self.raiz, dato_padre)
+
+    def _buscar_y_rotar_der(self, nodo, dato):
+        if not nodo: return None
+        if dato < nodo.dato:
+            nodo.izquierda = self._buscar_y_rotar_der(nodo.izquierda, dato)
+        elif dato > nodo.dato:
+            nodo.derecha = self._buscar_y_rotar_der(nodo.derecha, dato)
+        else:
+            # Encontramos el nodo desbalanceado, ejecutamos la rotación
+            return self.rotar_derecha(nodo)
+        return nodo
+
+    def ejecutar_rotacion_izquierda(self, dato_padre):
+        """Busca el nodo con el dato_padre y lo rota a la izquierda."""
+        self.raiz = self._buscar_y_rotar_izq(self.raiz, dato_padre)
+
+    def _buscar_y_rotar_izq(self, nodo, dato):
+        if not nodo: return None
+        if dato < nodo.dato:
+            nodo.izquierda = self._buscar_y_rotar_izq(nodo.izquierda, dato)
+        elif dato > nodo.dato:
+            nodo.derecha = self._buscar_y_rotar_izq(nodo.derecha, dato)
+        else:
+            return self.rotar_izquierda(nodo)
+        return nodo
+                                                 
 if __name__ == "__main__":
     #prueba
     #instanciar el arbol
