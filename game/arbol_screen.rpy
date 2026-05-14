@@ -323,3 +323,50 @@ screen reporte_final(casos_ordenados):
         action Hide("reporte_final")
         text_color "#cc8888"
         text_size 16
+
+
+# ── Screen de inventario ───────────────────────────────────────────────────
+
+screen bandeja_inventario():
+    # Esta pantalla muestra las pistas que el Jugador 1 encontró
+    zorder 100 # Para que aparezca por encima de todo
+    
+    frame:
+        xalign 0.98 yalign 0.2
+        xsize 350 ysize 500
+        background Solid("#1a1a1aee") # Un negro elegante semitransparente
+        padding (15, 15)
+
+        vbox:
+            spacing 10
+            text "BANDEJA DE EVIDENCIAS" size 22 color "#00e5ff" xalign 0.5 bold True
+            
+            null height 10
+
+            if not inventario_pistas:
+                text "Esperando recolección..." size 18 color "#777" italic True xalign 0.5 yalign 0.5
+            else:
+                viewport:
+                    mousewheel True
+                    scrollbars "vertical"
+                    vbox:
+                        spacing 8
+                        for item in inventario_pistas:
+                            # Botón para cada pista
+                            button:
+                                action [
+                                    # Al dar clic, insertamos la pista en el árbol
+                                    Function(investigacion.insertar_pista, item.id_delito, item.peso, item.descripcion),
+                                    # La quitamos del inventario
+                                    RemoveFromSet(inventario_pistas, item),
+                                    # Forzamos a Ren'Py a refrescar la pantalla
+                                    Function(renpy.restart)
+                                ]
+                                background Solid("#2c2c2c")
+                                hover_background Solid("#444")
+                                xfill True
+                                padding (10, 10)
+                                
+                                vbox:
+                                    text "[item.descripcion]" size 18 color "#ffffff"
+                                    text "Valor AVL: [item.id_delito] | Peso: [item.peso]" size 14 color "#00e5ff"

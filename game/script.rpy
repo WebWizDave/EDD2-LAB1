@@ -1,3 +1,23 @@
+# ── LÓGICA DE INVENTARIO Y PISTAS ─────────────────────────────────────────────
+init python:
+    # Esta clase define qué información tiene cada pista que encuentres
+    class PistaEncontrada:
+        def __init__(self, id_delito, peso, descripcion):
+            self.id_delito = id_delito   # Valor para el AVL (10, 20, 30...)
+            self.peso = peso             # Cuánto desbalancea el árbol (1-10)
+            self.descripcion = descripcion
+
+    # Función para que el Jugador 1 "encuentre" algo
+    def recolectar_pista(id_v, p, desc):
+        nueva = PistaEncontrada(id_v, p, desc)
+        inventario_pistas.append(nueva)
+        renpy.notify("Nueva evidencia en bandeja de entrada")
+
+# 'default' asegura que la lista se guarde al salvar la partida
+default inventario_pistas = []
+# Aquí inicializamos tu árbol AVL (usando el nombre 'investigacion' que ya usas)
+default investigacion = ArbolAVL()
+
 # ── Personajes ────────────────────────────────────────────────────────────────
 default alex_tipo = "m"  # "m" para masculino, "f" para femenino, "n" para neutro
 define alex    = Character("Alex",     color="#9AD1FF", what_slow_cps = 40, callback=name_callback, cb_name="alex")
@@ -63,6 +83,8 @@ image bg_director = im.Scale("bg_director.png", 1920, 1080)
 
 # ─────────────────────────────────────────────────────────────────────────────
 label start:
+    $ inventario_pistas = []       # Limpia el inventario al empezar
+    $ investigacion = ArbolAVL()   # Crea un árbol vacío
     
     # ── INTRODUCCIÓN ──────────────────────────────────────────────────────────
     play music "audio/musica_fondo.mp3" fadein 1.0

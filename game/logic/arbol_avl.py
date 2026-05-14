@@ -4,8 +4,7 @@ from .caso_criminal import CasoCriminal
 class ArbolAVL:
     def __init__(self):
         self.raiz = None
-
-    
+   
     #getters
     def obtener_altura(self, nodo):
         if not nodo:
@@ -96,12 +95,6 @@ class ArbolAVL:
                     return self.rotar_izquierda(nodo)
         return nodo
     
-    
-    
-    
-    
-    
-    
     #metodo para agregar los caso mas facil
     
     def agregar_caso(self, nuevo_caso, peso=1, desc=""):
@@ -124,8 +117,6 @@ class ArbolAVL:
         reporte = []
         self.recorrido_inorden(self.raiz, reporte)
         return reporte
-
-
                                                  
 if __name__ == "__main__":
     #prueba
