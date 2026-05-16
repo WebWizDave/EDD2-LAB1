@@ -1,8 +1,7 @@
 class Nodo:
-    def __init__(self, dato, peso_real=1, descripcion=""):
-        self.dato = dato           # Este es el valor del delito (para posición)
-        self.peso_real = peso_real   # Este es el peso oculto que afecta el balance
-        self.descripcion = descripcion
-        self.izquierda = None
-        self.derecha = None
-        self.altura = peso_real    # Iniciamos la altura con el peso de la pista
+    def __init__(self, clave, dato):
+        self.clave = clave         # EL PESO SUMADO (Ej. 7, 10, 25...)
+        self.dato = dato           # El objeto CasoCriminal completo
+        self.izquierda = None      # Mantenemos tu unificación impecable
+        self.derecha = None        # Mantenemos tu unificación impecable
+        self.altura = 1

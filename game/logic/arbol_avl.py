@@ -1,140 +1,110 @@
-from .nodo_avl import Nodo, NodoAVL
+from .nodo_avl import Nodo
 from .caso_criminal import CasoCriminal
+from .caso_criminal import calcular_sentencia
 
 class ArbolAVL:
     def __init__(self):
         self.raiz = None
-   
-    #getters
+
     def obtener_altura(self, nodo):
         if not nodo:
             return 0
         return nodo.altura
 
-    
     def obtener_balance(self, nodo):
         if not nodo:
             return 0
         return self.obtener_altura(nodo.izquierda) - self.obtener_altura(nodo.derecha)
-    
-    
+
     def actualizar_altura(self, nodo):
         if not nodo:
             return
-        # La altura considera el peso_real del nodo actual + el máximo de sus hijos
-        nodo.altura = nodo.peso_real + max(self.obtener_altura(nodo.izquierda), self.obtener_altura(nodo.derecha))
-        
-    #rotaciones simples
+        nodo.altura = 1 + max(self.obtener_altura(nodo.izquierda), self.obtener_altura(nodo.derecha))
+
     def rotar_derecha(self, y):
-        # x es el nuevo padre, y es el nodo que baja a la derecha
         x = y.izquierda
         T2 = x.derecha
 
-        # Realizar rotación
+        # Rotación
         x.derecha = y
         y.izquierda = T2
 
         # Actualizar alturas
         self.actualizar_altura(y)
         self.actualizar_altura(x)
-
         return x
 
     def rotar_izquierda(self, x):
-        # y es el nuevo padre, x es el nodo que baja a la izquierda
         y = x.derecha
         T2 = y.izquierda
 
-        # Realizar rotación
+        # Rotación
         y.izquierda = x
         x.derecha = T2
 
         # Actualizar alturas
         self.actualizar_altura(x)
         self.actualizar_altura(y)
-
         return y
-     
-    def insertar_pista(self, dato, peso_real, descripcion=""):
-        self.raiz = self._insertar_recursivo(self.raiz, dato, peso_real, descripcion)
 
-    def _insertar_recursivo(self, nodo, dato, peso_real, descripcion):
+    # Método principal para que interactúen los hermanos
+    def insertar_capitulo(self, peso_total, caso_criminal):
+        """ Inserta usando el peso como clave para el balanceo y guarda el caso. """
+        self.raiz = self._insertar_recursivo(self.raiz, peso_total, caso_criminal)
+
+    def _insertar_recursivo(self, nodo, clave, dato):
+        # 1. Inserción normal de árbol binario
         if not nodo:
-            return Nodo(dato, peso_real, descripcion)
+            return Nodo(clave, dato)
         
-        if dato < nodo.dato:
-            nodo.izquierda = self._insertar_recursivo(nodo.izquierda, dato, peso_real, descripcion)
-        elif dato > nodo.dato:
-            nodo.derecha = self._insertar_recursivo(nodo.derecha, dato, peso_real, descripcion)
-        
-        self.actualizar_altura(nodo)
-        return nodo
-    
-    # Funciones cooperativo para que el Jugador 2 llame desde la interfaz
-    def ejecutar_rotacion_derecha(self, dato_objetivo):
-        self.raiz = self._buscar_y_rotar(self.raiz, dato_objetivo, "derecha")
-
-    def ejecutar_rotacion_izquierda(self, dato_objetivo):
-        self.raiz = self._buscar_y_rotar(self.raiz, dato_objetivo, "izquierda")
-
-    def _buscar_y_rotar(self, nodo, dato, tipo):
-        if not nodo:
-            return None
-        
-        if dato < nodo.dato:
-            nodo.izquierda = self._buscar_y_rotar(nodo.izquierda, dato, tipo)
-        elif dato > nodo.dato:
-            nodo.derecha = self._buscar_y_rotar(nodo.derecha, dato, tipo)
+        if clave < nodo.clave:
+            nodo.izquierda = self._insertar_recursivo(nodo.izquierda, clave, dato)
+        elif clave > nodo.clave:
+            nodo.derecha = self._insertar_recursivo(nodo.derecha, clave, dato)
         else:
-            # Encontramos el nodo que el jugador quiere rotar
-            if tipo == "derecha":
-                if nodo.izquierda: # Solo rotamos si tiene hijo izquierdo
-                    return self.rotar_derecha(nodo)
-            else:
-                if nodo.derecha: # Solo rotamos si tiene hijo derecho
-                    return self.rotar_izquierda(nodo)
-        return nodo
-    
-    #metodo para agregar los caso mas facil
-    
-    def agregar_caso(self, nuevo_caso, peso=1, desc=""):
-        # Ahora usa insertar_pista para mantener la lógica de pesos
-        self.raiz = self._insertar_recursivo(self.raiz, nuevo_caso, peso, desc)
-    
-    def recorrido_inorden(self, nodo_actual, lista_reporte):
-        if not nodo_actual:
-            return
+            return nodo # No permitimos duplicados exactos de peso para no romper la lógica
+        
+        # 2. Actualizar altura del ancestro
+        self.actualizar_altura(nodo)
 
-        # 1. Visitar subárbol IZQUIERDA
-        self.recorrido_inorden(nodo_actual.izquierda, lista_reporte)
-        # 2. Visitar la RAÍZ (El caso actual)
-        lista_reporte.append(nodo_actual.dato)
-        # 3. Visitar subárbol DERECHA
-        self.recorrido_inorden(nodo_actual.derecha, lista_reporte)
-   
+        # 3. Obtener factor de balance
+        balance = self.obtener_balance(nodo)
+
+        # 4. Las 4 rotaciones del AVL (usando 'izquierda' y 'derecha')
+        # Caso Izquierda-Izquierda
+        if balance > 1 and clave < nodo.izquierda.clave:
+            return self.rotar_derecha(nodo)
+        
+        # Caso Derecha-Derecha
+        if balance < -1 and clave > nodo.derecha.clave:
+            return self.rotar_izquierda(nodo)
+        
+        # Caso Izquierda-Derecha
+        if balance > 1 and clave > nodo.izquierda.clave:
+            nodo.izquierda = self.rotar_izquierda(nodo.izquierda)
+            return self.rotar_derecha(nodo)
+        
+        # Caso Derecha-Izquierda
+        if balance < -1 and clave < nodo.derecha.clave:
+            nodo.derecha = self.rotar_derecha(nodo.derecha)
+            return self.rotar_izquierda(nodo)
+
+        return nodo
+
+    # Métodos para extraer los datos para el Juez y la Interfaz Visual
     def obtener_lista_ordenada(self):
-        """Método público para obtener el reporte desde el juego"""
-        reporte = []
-        self.recorrido_inorden(self.raiz, reporte)
-        return reporte
-                                                 
-if __name__ == "__main__":
-    #prueba
-    #instanciar el arbol
-    investigacion = ArbolAVL()
-    
-    #casos de prueba
-    caso1 = CasoCriminal(1,"Injuria", "Art.220 CP", "Multa/Prision", 10)
-    caso2 = CasoCriminal(2, "Calumnia", "Art. 221 CP", "Prision 16-72 meses", 20)
-    caso3 = CasoCriminal(3,"Suplantación de sitios web", "Ley 1273 de 2009 Art. 269F","Prision 48-96 meses", 30)
-    caso4 = CasoCriminal(4,"Acceso abusivo a sistemas informaticos", "Ley 1273 de 2009 Art. 269A","Prision 48-96 meses + multa", 40)
-    
-    #Intertar en el arbol
-    investigacion.agregar_caso(caso1)
-    investigacion.agregar_caso(caso2)
-    investigacion.agregar_caso(caso3)
-    investigacion.agregar_caso(caso4)
-    
+        """Devuelve una lista de tuplas: [(peso, objeto_caso), ...]"""
+        lista = []
+        self._recorrido_inorden(self.raiz, lista)
+        return lista
+
+    def _recorrido_inorden(self, nodo, lista):
+        if nodo:
+            self._recorrido_inorden(nodo.izquierda, lista)
+            lista.append((nodo.clave, nodo.dato))
+            self._recorrido_inorden(nodo.derecha, lista)
+'''   
     print("---RECUENTO DE CASOS CRIMINALES---")
     for c in investigacion.obtener_reporte():
         print(f"[{c.gravedad}] -> {c.tipo} (Ley:{c.ley})")
+        '''
